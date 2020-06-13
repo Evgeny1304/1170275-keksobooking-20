@@ -89,9 +89,9 @@ var renderMapPin = function (pin) {
 var mapPins = document.querySelector('.map__pins');
 var fragment = document.createDocumentFragment();
 
-var renderMapPins = function (offers) {
-  for (var i = 0; i < offers.length; i++) {
-    fragment.appendChild(renderMapPin(offers[i]));
+var renderMapPins = function (pins) {
+  for (var i = 0; i < pins.length; i++) {
+    fragment.appendChild(renderMapPin(pins[i]));
   }
   mapPins.appendChild(fragment);
 };
@@ -197,7 +197,7 @@ var isCorrectRoomsGuests = function () {
 
 isCorrectRoomsGuests();
 
-adSelectRooms.addEventListener('change', function (evt) {
+adSelectRooms.addEventListener('change', function () {
   var isCorrectGuests = isCorrectRoomsGuests();
 
   if (isCorrectGuests === 'Неверно') {
@@ -208,7 +208,7 @@ adSelectRooms.addEventListener('change', function (evt) {
 
 });
 
-adSelectCapacity.addEventListener('change', function (evt) {
+adSelectCapacity.addEventListener('change', function () {
   var isCorrectRooms = isCorrectRoomsGuests();
 
   if (isCorrectRooms === 'Неверно') {
@@ -218,7 +218,6 @@ adSelectCapacity.addEventListener('change', function (evt) {
   }
 
 });
-
 
 
 // var cardPopupTemplate = document.querySelector('#card').content.querySelector('.popup');
