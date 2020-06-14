@@ -17,6 +17,10 @@ var MAX_Y = 630;
 var MAX_OFFER_PRICE = 1000000;
 var MAX_OFFER_ROOMS = 100;
 var MAX_OFFER_GUESTS = 3;
+var ERROR_MSG_ROOMS_GUESTS = {
+  'rooms': 'Выбрано недопустимое количество комнат',
+  'capacity': 'Выбрано недопустимое количество гостей'
+};
 
 var getRandom = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -182,14 +186,16 @@ var adSelectCapacity = adForm.querySelector('#capacity');
 var adSelectRooms = adForm.querySelector('#room_number');
 
 var isCorrectRoomsGuests = function () {
-  var isCorrect = '';
+  var isCorrect = true;
+  var adSelectRoomsValue = parseInt(adSelectRooms.value, 10);
+  var adSelectCapacityValue = parseInt(adSelectCapacity.value, 10);
 
-  if (+adSelectRooms.value === MAX_OFFER_ROOMS && +adSelectCapacity.value >= 1) {
-    isCorrect = 'Неверно';
-  } else if (+adSelectCapacity.value > +adSelectRooms.value && +adSelectCapacity.value > 0) {
-    isCorrect = 'Неверно';
-  } else {
-    isCorrect = 'Верно';
+  if (adSelectRoomsValue === MAX_OFFER_ROOMS && adSelectCapacityValue >= 1) {
+    isCorrect = false;
+  } else if (adSelectCapacityValue > 0 && adSelectCapacityValue > adSelectRoomsValue) {
+    isCorrect = false;
+  } else if (adSelectCapacityValue === 0 && adSelectRoomsValue < MAX_OFFER_ROOMS) {
+    isCorrect = false;
   }
 
   return isCorrect;
@@ -197,27 +203,26 @@ var isCorrectRoomsGuests = function () {
 
 isCorrectRoomsGuests();
 
-adSelectRooms.addEventListener('change', function () {
-  var isCorrectGuests = isCorrectRoomsGuests();
-
-  if (isCorrectGuests === 'Неверно') {
-    adSelectCapacity.setCustomValidity('Выбрано недопустимое количество гостей');
-  } else {
-    adSelectCapacity.setCustomValidity('');
+adForm.addEventListener('submit', function (evt) {
+  if (!isCorrectRoomsGuests()) {
+    evt.preventDefault();
   }
-
 });
 
-adSelectCapacity.addEventListener('change', function () {
-  var isCorrectRooms = isCorrectRoomsGuests();
+var validateRoomsAndGuests = function (evt) {
+  var isValid = isCorrectRoomsGuests();
+  var target = evt.target;
+  var type = target.dataset.type;
 
-  if (isCorrectRooms === 'Неверно') {
-    adSelectRooms.setCustomValidity('Выбрано недопустимое количество комнат');
+  if (isValid) {
+    target.setCustomValidity('');
   } else {
-    adSelectRooms.setCustomValidity('');
+    target.setCustomValidity(ERROR_MSG_ROOMS_GUESTS[type]);
   }
+};
 
-});
+adSelectRooms.addEventListener('change', validateRoomsAndGuests);
+adSelectCapacity.addEventListener('change', validateRoomsAndGuests);
 
 
 // var cardPopupTemplate = document.querySelector('#card').content.querySelector('.popup');
