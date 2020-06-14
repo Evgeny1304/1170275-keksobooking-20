@@ -161,7 +161,7 @@ var getAddressActive = function () {
   return addressX + ', ' + addressY;
 };
 
-var openMap = function () {
+var activatePage = function () {
   map.classList.remove('map--faded');
   renderMapPins(offers);
   adForm.classList.remove('ad-form--disabled');
@@ -172,13 +172,13 @@ var openMap = function () {
 
 mapPinBtn.addEventListener('mousedown', function (evt) {
   if (evt.button === 0) {
-    openMap();
+    activatePage();
   }
 });
 
 mapPinBtn.addEventListener('keydown', function (evt) {
   if (evt.key === 'Enter') {
-    openMap();
+    activatePage();
   }
 });
 
@@ -215,7 +215,8 @@ var validateRoomsAndGuests = function (evt) {
   var type = target.dataset.type;
 
   if (isValid) {
-    target.setCustomValidity('');
+    adSelectRooms.setCustomValidity('');
+    adSelectCapacity.setCustomValidity('');
   } else {
     target.setCustomValidity(ERROR_MSG_ROOMS_GUESTS[type]);
   }
