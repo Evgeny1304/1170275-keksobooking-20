@@ -61,6 +61,4 @@
   mapPinBtn.addEventListener('keydown', function (evt) {
     window.main.isEnterEvent(evt, activatePage());
   });
-
-  window.card.renderCardPopup(offers[0]);
 })();

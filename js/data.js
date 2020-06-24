@@ -24,6 +24,7 @@
         var locationY = window.main.getRandom(MIN_Y, MAX_Y);
 
         var offer = {
+          'id': (i + 1),
           'author': {
             'avatar': 'img/avatars/user0' + (i + 1) + '.png'
           },

@@ -72,12 +72,31 @@
 
       cardPopup.querySelector('.popup__avatar').src = card.author.avatar;
 
+      var cardBtnClose = cardPopup.querySelector('.popup__close');
+
+      cardBtnClose.addEventListener('click', function () {
+        cardPopup.remove();
+      });
+
+      cardBtnClose.addEventListener('keydown', function (evt) {
+        window.main.isEscEvent(evt, cardPopup.remove());
+      });
+
       return cardPopup;
     },
 
     renderCardPopup: function (card) {
       fragment.appendChild(this.renderCard(card));
       map.insertBefore(fragment, mapFilterContainer);
+    },
+
+    removeCardPopup: function () {
+      var offerCard = map.querySelector('.map__card');
+      var isCard = map.contains(offerCard);
+
+      if (isCard) {
+        map.removeChild(offerCard);
+      }
     }
   };
 })();

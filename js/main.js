@@ -2,6 +2,7 @@
 
 (function () {
   var ENTER_KEY = 'Enter';
+  var ESC_KEY = 'Escape';
 
   window.main = {
     getRandom: function (min, max) {
@@ -26,6 +27,12 @@
 
     isEnterEvent: function (evt, action) {
       if (evt.key === ENTER_KEY) {
+        action();
+      }
+    },
+
+    isEscEvent: function (evt, action) {
+      if (evt.key === ESC_KEY) {
         action();
       }
     }
