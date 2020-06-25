@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var MAP_PIN_CURSOR_HEIGHT = 22;
   var MAX_OFFER_ROOMS = 100;
   var MIN_TITLE_LENGTH = 30;
   var MAX_TITLE_LENGTH = 100;
@@ -19,6 +20,31 @@
   var adInputPrice = adForm.querySelector('#price');
   var adSelectTimeIn = adForm.querySelector('#timein');
   var adSelectTimeOut = adForm.querySelector('#timeout');
+  var adFormElements = adForm.querySelectorAll('fieldset');
+  var adFormAddress = adForm.querySelector('#address');
+
+  var getAddress = function (isWithCursorHeight) {
+    var offset = isWithCursorHeight ? MAP_PIN_CURSOR_HEIGHT : 0;
+    var addressX = window.mapWidth / 2;
+    var addressY = window.mapHeight / 2 + offset;
+
+    return addressX + ', ' + addressY;
+  };
+
+  window.form = {
+    activate: function () {
+      adForm.classList.remove('ad-form--disabled');
+      window.util.enableInput(adFormElements);
+      adFormAddress.value = getAddress(true);
+    },
+
+    deactivate: function () {
+      window.util.disableInput(adFormElements);
+      adFormAddress.value = getAddress();
+    }
+  };
+
+  window.form.deactivate();
 
   var isCorrectRoomsGuests = function () {
     var isCorrect = true;
@@ -93,11 +119,11 @@
   adInputPrice.addEventListener('input', validatePrice);
   adSelectType.addEventListener('change', changeMinPrice);
 
-  adSelectTimeIn.addEventListener('change' , function () {
+  adSelectTimeIn.addEventListener('change', function () {
     adSelectTimeOut.value = adSelectTimeIn.value;
   });
 
-  adSelectTimeOut.addEventListener('change' , function () {
+  adSelectTimeOut.addEventListener('change', function () {
     adSelectTimeIn.value = adSelectTimeOut.value;
   });
 })();
