@@ -19,8 +19,8 @@
     renderCardRooms: function (element, card) {
       var rooms = card.offer.rooms;
       var guests = card.offer.guests;
-      var roomsMsg = window.main.declWord(rooms, ['комната', 'комнаты', 'комнат']);
-      var guestsMsg = window.main.declWord(guests, ['гостя', 'гостей', 'гостей']);
+      var roomsMsg = window.util.declWord(rooms, ['комната', 'комнаты', 'комнат']);
+      var guestsMsg = window.util.declWord(guests, ['гостя', 'гостей', 'гостей']);
 
       element.querySelector('.popup__text--capacity').textContent = rooms + ' ' + roomsMsg + ' для ' + guests + ' ' + guestsMsg;
     },
@@ -72,12 +72,33 @@
 
       cardPopup.querySelector('.popup__avatar').src = card.author.avatar;
 
+      var cardBtnClose = cardPopup.querySelector('.popup__close');
+
+      cardBtnClose.addEventListener('click', function () {
+        cardPopup.remove();
+        var pins = document.querySelectorAll('.map__pin');
+        window.pin.removeActiveStatePins(pins);
+      });
+
+      // cardBtnClose.addEventListener('keydown', function (evt) {
+      //   window.util.isEscEvent(evt, cardPopup.remove());
+      // });
+
       return cardPopup;
     },
 
     renderCardPopup: function (card) {
       fragment.appendChild(this.renderCard(card));
       map.insertBefore(fragment, mapFilterContainer);
+    },
+
+    removeCardPopup: function () {
+      var offerCard = map.querySelector('.map__card');
+      var isCard = map.contains(offerCard);
+
+      if (isCard) {
+        map.removeChild(offerCard);
+      }
     }
   };
 })();

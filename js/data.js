@@ -20,25 +20,26 @@
       var offers = [];
 
       for (var i = 0; i < MAX_OFFER_COUNT; i++) {
-        var locationX = window.main.getRandom(0, mapWidth);
-        var locationY = window.main.getRandom(MIN_Y, MAX_Y);
+        var locationX = window.util.getRandom(0, mapWidth);
+        var locationY = window.util.getRandom(MIN_Y, MAX_Y);
 
         var offer = {
+          'id': (i + 1),
           'author': {
             'avatar': 'img/avatars/user0' + (i + 1) + '.png'
           },
           'offer': {
             'title': 'Сдается в аренду',
             'address': locationX + ', ' + locationY,
-            'price': window.main.getRandom(0, MAX_OFFER_PRICE),
-            'type': OFFER_TYPE[window.main.getRandom(0, OFFER_TYPE.length - 1)],
-            'rooms': window.main.getRandom(1, MAX_OFFER_ROOMS),
-            'guests': window.main.getRandom(0, MAX_OFFER_GUESTS),
-            'checkin': OFFER_CHECKIN[window.main.getRandom(0, OFFER_CHECKIN.length - 1)],
-            'checkout': OFFER_CHECKIN[window.main.getRandom(0, OFFER_CHECKIN.length - 1)],
-            'features': window.main.getRandomArray(OFFER_FEATURES),
+            'price': window.util.getRandom(0, MAX_OFFER_PRICE),
+            'type': OFFER_TYPE[window.util.getRandom(0, OFFER_TYPE.length - 1)],
+            'rooms': window.util.getRandom(1, MAX_OFFER_ROOMS),
+            'guests': window.util.getRandom(0, MAX_OFFER_GUESTS),
+            'checkin': OFFER_CHECKIN[window.util.getRandom(0, OFFER_CHECKIN.length - 1)],
+            'checkout': OFFER_CHECKIN[window.util.getRandom(0, OFFER_CHECKIN.length - 1)],
+            'features': window.util.getRandomArray(OFFER_FEATURES),
             'description': 'Отличное жилье с комфортом',
-            'photos': window.main.getRandomArray(OFFER_PHOTOS)
+            'photos': window.util.getRandomArray(OFFER_PHOTOS)
           },
           'location': {
             'x': locationX,
