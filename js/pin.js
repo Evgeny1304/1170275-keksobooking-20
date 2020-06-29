@@ -11,28 +11,28 @@
 
   var offers = window.data.getOffers();
 
+  var renderMapPin = function (pin) {
+    var mapPin = mapPinTemplate.cloneNode(true);
+    var mapPinImg = mapPin.querySelector('img');
+    mapPin.dataset.id = pin.id;
+
+    mapPin.style.left = (pin.location.x + MAP_PIN_WIDTH / 2) + 'px';
+    mapPin.style.top = (pin.location.y - MAP_PIN_HEIGHT) + 'px';
+    mapPinImg.src = pin.author.avatar;
+    mapPinImg.alt = pin.offer.title;
+
+    return mapPin;
+  };
+
   window.pin = {
-    renderMapPin: function (pin) {
-      var mapPin = mapPinTemplate.cloneNode(true);
-      var mapPinImg = mapPin.querySelector('img');
-      mapPin.dataset.id = pin.id;
-
-      mapPin.style.left = (pin.location.x + MAP_PIN_WIDTH / 2) + 'px';
-      mapPin.style.top = (pin.location.y - MAP_PIN_HEIGHT) + 'px';
-      mapPinImg.src = pin.author.avatar;
-      mapPinImg.alt = pin.offer.title;
-
-      return mapPin;
-    },
-
-    renderMapPins: function (pins) {
+    render: function (pins) {
       for (var i = 0; i < pins.length; i++) {
-        fragment.appendChild(this.renderMapPin(pins[i]));
+        fragment.appendChild(renderMapPin(pins[i]));
       }
       mapPins.appendChild(fragment);
     },
 
-    removeActiveStatePins: function (pins) {
+    removeActiveStates: function (pins) {
       for (var i = 0; i < pins.length; i++) {
         pins[i].classList.remove('map__pin--active');
       }
@@ -45,22 +45,24 @@
 
     if (pinBtn !== null && !pinBtn.classList.contains('map__pin--main')) {
       var pins = document.querySelectorAll('.map__pin');
-      window.pin.removeActiveStatePins(pins);
-      window.card.removeCardPopup();
+      window.pin.removeActiveStates(pins);
+      window.card.remove(window.map.mainContainer);
 
       var idBtn = parseInt(pinBtn.dataset.id, 10);
       var offer = offers.find(function (item) {
         return item.id === idBtn;
       });
 
-      window.card.renderCardPopup(offer);
+      window.card.render(offer, window.map.mainContainer, window.map.filterContainer);
       pinBtn.classList.add('map__pin--active');
     }
   };
 
   document.addEventListener('click', openOfferCardPopup);
 
-  // document.addEventListener('keydown', function (evt) {
-  //   window.util.isEnterEvent(evt, openOfferCardPopup);
-  // });
+  document.addEventListener('keydown', function (evt) {
+    window.util.isEnterEvent(evt, function () {
+      openOfferCardPopup(evt);
+    });
+  });
 })();

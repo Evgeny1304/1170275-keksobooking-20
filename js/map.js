@@ -3,24 +3,30 @@
 (function () {
   var map = document.querySelector('.map');
   var mapPinBtn = map.querySelector('.map__pin--main');
-
+  var mapFilterContainer = document.querySelector('.map__filter--container');
   var mapFilterForm = document.querySelector('.map__filters');
   var mapFilters = mapFilterForm.querySelectorAll('.map__filter, .map__features');
 
-  window.mapWidth = map.offsetWidth;
-  window.mapHeight = map.offsetHeight;
+  var mapWidth = map.offsetWidth;
+  var mapHeight = map.offsetHeight;
   var offers = window.data.getOffers();
 
   window.map = {
     activate: function () {
       map.classList.remove('map--faded');
-      window.pin.renderMapPins(offers);
+      window.pin.render(offers);
       window.util.enableInput(mapFilters);
     },
 
     deactivate: function () {
       window.util.disableInput(mapFilters);
-    }
+    },
+
+    width: mapWidth,
+    height: mapHeight,
+
+    mainContainer: map,
+    filterContainer: mapFilterContainer
   };
 
   window.map.deactivate();

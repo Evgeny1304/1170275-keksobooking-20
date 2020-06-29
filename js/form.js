@@ -5,12 +5,6 @@
   var MAX_OFFER_ROOMS = 100;
   var MIN_TITLE_LENGTH = 30;
   var MAX_TITLE_LENGTH = 100;
-  var MIN_PRICES_BY_TYPE = {
-    'flat': 1000,
-    'house': 5000,
-    'bungalo': 0,
-    'palace': 10000
-  };
 
   var adForm = document.querySelector('.ad-form');
   var adSelectCapacity = adForm.querySelector('#capacity');
@@ -25,8 +19,8 @@
 
   var getAddress = function (isWithCursorHeight) {
     var offset = isWithCursorHeight ? MAP_PIN_CURSOR_HEIGHT : 0;
-    var addressX = window.mapWidth / 2;
-    var addressY = window.mapHeight / 2 + offset;
+    var addressX = window.map.width / 2;
+    var addressY = window.map.height / 2 + offset;
 
     return addressX + ', ' + addressY;
   };
@@ -63,8 +57,9 @@
   };
 
   var changeMinPrice = function () {
-    adInputPrice.min = MIN_PRICES_BY_TYPE[adSelectType.value];
-    adInputPrice.placeholder = MIN_PRICES_BY_TYPE[adSelectType.value];
+    var minPrice = window.util.offerTypeSettings[adSelectType.value].minPrice;
+    adInputPrice.min = minPrice;
+    adInputPrice.placeholder = minPrice;
   };
 
   var validateRoomsAndGuests = function () {
@@ -86,11 +81,11 @@
   };
 
   var validatePrice = function () {
-    var adSelectTypeValue = adSelectType.value;
     var adInputPriceValue = parseInt(adInputPrice.value, 10);
+    var minPrice = window.util.offerTypeSettings[adSelectType.value].minPrice;
 
-    if (adInputPriceValue < MIN_PRICES_BY_TYPE[adSelectTypeValue]) {
-      adInputPrice.setCustomValidity('Введите другое значение. Минимальная цена за ночь для выбранного типа жилья: ' + MIN_PRICES_BY_TYPE[adSelectTypeValue]);
+    if (adInputPriceValue < minPrice) {
+      adInputPrice.setCustomValidity('Введите другое значение. Минимальная цена за ночь для выбранного типа жилья: ' + minPrice);
     } else {
       adInputPrice.setCustomValidity('');
     }
