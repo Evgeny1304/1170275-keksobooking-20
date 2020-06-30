@@ -18,7 +18,7 @@
   var adFormAddress = adForm.querySelector('#address');
 
   var getAddress = function (isWithCursorHeight) {
-    var offset = isWithCursorHeight ? MAP_PIN_CURSOR_HEIGHT : 0;
+    var offset = isWithCursorHeight ? MAP_PIN_CURSOR_HEIGHT + window.map.pinBtnHeight : 0;
     var addressX = window.map.width / 2;
     var addressY = window.map.height / 2 + offset;
 
@@ -35,6 +35,13 @@
     deactivate: function () {
       window.util.disableInput(adFormElements);
       adFormAddress.value = getAddress();
+    },
+
+    writeAddressCoordinate: function (coordinateX, coordinateY) {
+      var addressX = coordinateX;
+      var addressY = coordinateY + MAP_PIN_CURSOR_HEIGHT;
+
+      adFormAddress.value = addressX + ', ' + addressY;
     }
   };
 
