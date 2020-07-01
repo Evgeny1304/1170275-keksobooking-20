@@ -6,6 +6,25 @@
   var MOUSE_BTN_LEFT = 0;
 
   window.util = {
+    offerTypeSettings: {
+      'flat': {
+        'label': 'Квартира',
+        'minPrice': 1000
+      },
+      'house': {
+        'label': 'Дом',
+        'minPrice': 5000
+      },
+      'bungalo': {
+        'label': 'Бунгало',
+        'minPrice': 0
+      },
+      'palace': {
+        'label': 'Дворец',
+        'minPrice': 10000
+      }
+    },
+
     getRandom: function (min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min);
     },
