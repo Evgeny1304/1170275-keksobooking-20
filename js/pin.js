@@ -3,13 +3,14 @@
 (function () {
   var MAP_PIN_WIDTH = 50;
   var MAP_PIN_HEIGHT = 70;
+  var MAX_OFFER_COUNT = 8;
 
   var mapPins = document.querySelector('.map__pins');
   var mapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
   var fragment = document.createDocumentFragment();
 
-  var offers = window.data.getOffers();
+  var offers = window.backend.getOffers();
 
   var renderMapPin = function (pin) {
     var mapPin = mapPinTemplate.cloneNode(true);
@@ -26,7 +27,7 @@
 
   window.pin = {
     render: function (pins) {
-      for (var i = 0; i < pins.length; i++) {
+      for (var i = 0; i < MAX_OFFER_COUNT; i++) {
         fragment.appendChild(renderMapPin(pins[i]));
       }
       mapPins.appendChild(fragment);

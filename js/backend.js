@@ -11,11 +11,20 @@
   var MAX_OFFER_PRICE = 1000000;
   var MAX_OFFER_ROOMS = 100;
   var MAX_OFFER_GUESTS = 3;
+  var URL = 'https://javascript.pages.academy/keksobooking';
 
   var map = document.querySelector('.map');
   var mapWidth = map.offsetWidth;
 
-  window.data = {
+  window.backend = {
+    load: function (onLoad, onError) {
+      window.util.makeRequest(null, 'GET', URL + '/data', onLoad, onError);
+    },
+
+    save: function (data, onLoad, onError) {
+      window.util.makeRequest(data, 'POST', URL, onLoad, onError);
+    },
+
     getOffers: function () {
       var offers = [];
 

@@ -21,12 +21,23 @@
   var limitMoveMinY = MIN_Y - mapPinBtn.offsetWidth - MAP_PIN_CURSOR_HEIGHT;
   var limitMoveMaxY = MAX_Y - mapPinBtn.offsetWidth - MAP_PIN_CURSOR_HEIGHT;
 
-  var offers = window.data.getOffers();
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
 
   window.map = {
     activate: function () {
       map.classList.remove('map--faded');
-      window.pin.render(offers);
+      window.backend.load(window.pin.render, errorHandler);
       window.util.enableInput(mapFilters);
     },
 
