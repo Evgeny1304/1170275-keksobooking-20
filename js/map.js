@@ -21,6 +21,14 @@
   var limitMoveMinY = MIN_Y - mapPinBtn.offsetWidth - MAP_PIN_CURSOR_HEIGHT;
   var limitMoveMaxY = MAX_Y - mapPinBtn.offsetWidth - MAP_PIN_CURSOR_HEIGHT;
 
+  var onSuccess = function (data) {
+    window.offers = data;
+
+    for (var i = 0; i < window.offers.length; i++) {
+      window.offers[i].id = i + 1;
+    }
+  };
+
   var errorHandler = function (errorMessage) {
     var node = document.createElement('div');
     node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
@@ -33,28 +41,7 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
-
-  window.map = {
-    activate: function () {
-      map.classList.remove('map--faded');
-      window.backend.load(window.pin.render, errorHandler);
-      window.util.enableInput(mapFilters);
-    },
-
-    deactivate: function () {
-      window.util.disableInput(mapFilters);
-    },
-
-    width: mapWidth,
-    height: mapHeight,
-
-    mainContainer: map,
-    filterContainer: mapFilterContainer,
-
-    pinBtnHeight: mapPinBtn.offsetHeight
-  };
-
-  window.map.deactivate();
+  window.backend.load(onSuccess, errorHandler);
 
   var getAddressNewCoordinate = function () {
     var addressNewCoordinateX = Math.floor(mapPinBtn.offsetLeft + mapPinBtn.offsetWidth / 2);
@@ -116,4 +103,26 @@
   mapPinBtn.addEventListener('keydown', function (evt) {
     window.util.isEnterEvent(evt, window.main.activatePage);
   });
+
+  window.map = {
+    activate: function () {
+      map.classList.remove('map--faded');
+      window.pin.render(window.offers);
+      window.util.enableInput(mapFilters);
+    },
+
+    deactivate: function () {
+      window.util.disableInput(mapFilters);
+    },
+
+    width: mapWidth,
+    height: mapHeight,
+
+    mainContainer: map,
+    filterContainer: mapFilterContainer,
+
+    pinBtnHeight: mapPinBtn.offsetHeight
+  };
+
+  window.map.deactivate();
 })();

@@ -67,7 +67,7 @@
   var closeCard = function () {
     var cardPopup = document.querySelector('.map__card');
     var pins = document.querySelectorAll('.map__pin');
-    window.pin.removeActiveStates(pins);
+    window.util.removeActiveStatesPins(pins);
 
     if (cardPopup !== null) {
       cardPopup.remove();

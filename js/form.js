@@ -25,28 +25,6 @@
     return addressX + ', ' + addressY;
   };
 
-  window.form = {
-    activate: function () {
-      adForm.classList.remove('ad-form--disabled');
-      window.util.enableInput(adFormElements);
-      adFormAddress.value = getAddress(true);
-    },
-
-    deactivate: function () {
-      window.util.disableInput(adFormElements);
-      adFormAddress.value = getAddress();
-    },
-
-    writeAddressCoordinate: function (coordinateX, coordinateY) {
-      var addressX = coordinateX;
-      var addressY = coordinateY + MAP_PIN_CURSOR_HEIGHT;
-
-      adFormAddress.value = addressX + ', ' + addressY;
-    }
-  };
-
-  window.form.deactivate();
-
   var isCorrectRoomsGuests = function () {
     var isCorrect = true;
     var adSelectRoomsValue = parseInt(adSelectRooms.value, 10);
@@ -128,4 +106,26 @@
   adSelectTimeOut.addEventListener('change', function () {
     adSelectTimeIn.value = adSelectTimeOut.value;
   });
+
+  window.form = {
+    activate: function () {
+      adForm.classList.remove('ad-form--disabled');
+      window.util.enableInput(adFormElements);
+      adFormAddress.value = getAddress(true);
+    },
+
+    deactivate: function () {
+      window.util.disableInput(adFormElements);
+      adFormAddress.value = getAddress();
+    },
+
+    writeAddressCoordinate: function (coordinateX, coordinateY) {
+      var addressX = coordinateX;
+      var addressY = coordinateY + MAP_PIN_CURSOR_HEIGHT;
+
+      adFormAddress.value = addressX + ', ' + addressY;
+    }
+  };
+
+  window.form.deactivate();
 })();
