@@ -21,29 +21,27 @@
   var limitMoveMinY = MIN_Y - mapPinBtn.offsetWidth - MAP_PIN_CURSOR_HEIGHT;
   var limitMoveMaxY = MAX_Y - mapPinBtn.offsetWidth - MAP_PIN_CURSOR_HEIGHT;
 
-  var offers = window.data.getOffers();
+  var onSuccess = function (data) {
+    window.offers = data;
 
-  window.map = {
-    activate: function () {
-      map.classList.remove('map--faded');
-      window.pin.render(offers);
-      window.util.enableInput(mapFilters);
-    },
-
-    deactivate: function () {
-      window.util.disableInput(mapFilters);
-    },
-
-    width: mapWidth,
-    height: mapHeight,
-
-    mainContainer: map,
-    filterContainer: mapFilterContainer,
-
-    pinBtnHeight: mapPinBtn.offsetHeight
+    for (var i = 0; i < window.offers.length; i++) {
+      window.offers[i].id = i + 1;
+    }
   };
 
-  window.map.deactivate();
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  window.backend.load(onSuccess, errorHandler);
 
   var getAddressNewCoordinate = function () {
     var addressNewCoordinateX = Math.floor(mapPinBtn.offsetLeft + mapPinBtn.offsetWidth / 2);
@@ -105,4 +103,26 @@
   mapPinBtn.addEventListener('keydown', function (evt) {
     window.util.isEnterEvent(evt, window.main.activatePage);
   });
+
+  window.map = {
+    activate: function () {
+      map.classList.remove('map--faded');
+      window.pin.render(window.offers);
+      window.util.enableInput(mapFilters);
+    },
+
+    deactivate: function () {
+      window.util.disableInput(mapFilters);
+    },
+
+    width: mapWidth,
+    height: mapHeight,
+
+    mainContainer: map,
+    filterContainer: mapFilterContainer,
+
+    pinBtnHeight: mapPinBtn.offsetHeight
+  };
+
+  window.map.deactivate();
 })();

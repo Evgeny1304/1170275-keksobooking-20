@@ -4,6 +4,10 @@
   var ENTER_KEY = 'Enter';
   var ESC_KEY = 'Escape';
   var MOUSE_BTN_LEFT = 0;
+  var TIMEOUT_IN_MS = 10000;
+  var StatusCode = {
+    OK: 200
+  };
 
   window.util = {
     offerTypeSettings: {
@@ -27,17 +31,6 @@
 
     getRandom: function (min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min);
-    },
-
-    getRandomArray: function (arr) {
-      var randomArr = [];
-      var randomIndex = this.getRandom(0, arr.length - 1);
-
-      for (var i = randomIndex; i < arr.length; i++) {
-        randomArr.push(arr[i]);
-      }
-
-      return randomArr;
     },
 
     declWord: function (number, titles) {
@@ -73,6 +66,36 @@
       for (var i = 0; i < elements.length; i++) {
         elements[i].removeAttribute('disabled');
       }
+    },
+
+    removeActiveStatesPins: function (pins) {
+      for (var i = 0; i < pins.length; i++) {
+        pins[i].classList.remove('map__pin--active');
+      }
+    },
+
+    makeRequest: function (data, method, url, onLoad, onError) {
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = 'json';
+
+      xhr.addEventListener('load', function () {
+        if (xhr.status === StatusCode.OK) {
+          onLoad(xhr.response);
+        } else {
+          onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+        }
+      });
+      xhr.addEventListener('error', function () {
+        onError('Произошла ошибка соединения');
+      });
+      xhr.addEventListener('timeout', function () {
+        onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+      });
+
+      xhr.timeout = TIMEOUT_IN_MS;
+
+      xhr.open(method, url);
+      xhr.send(data);
     }
   };
 })();
