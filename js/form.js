@@ -16,6 +16,7 @@
   var adSelectTimeOut = adForm.querySelector('#timeout');
   var adFormElements = adForm.querySelectorAll('fieldset');
   var adFormAddress = adForm.querySelector('#address');
+  var adFormReset = adForm.querySelector('.ad-form__reset');
 
   var getAddress = function (isWithCursorHeight) {
     var offset = isWithCursorHeight ? MAP_PIN_CURSOR_HEIGHT + window.map.pinBtnHeight : 0;
@@ -107,6 +108,25 @@
     adSelectTimeIn.value = adSelectTimeOut.value;
   });
 
+  var onSuccess = function () {
+    window.main.deactivatePage();
+    window.requestMessage.render('success');
+  };
+
+  var onError = function () {
+    window.requestMessage.render('error');
+  };
+
+  adForm.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(adForm), onSuccess, onError);
+    evt.preventDefault();
+  });
+
+  adFormReset.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    window.main.deactivatePage();
+  });
+
   window.form = {
     activate: function () {
       adForm.classList.remove('ad-form--disabled');
@@ -116,7 +136,10 @@
 
     deactivate: function () {
       window.util.disableInput(adFormElements);
+      adForm.reset();
+      changeMinPrice();
       adFormAddress.value = getAddress();
+      adForm.classList.add('ad-form--disabled');
     },
 
     writeAddressCoordinate: function (coordinateX, coordinateY) {

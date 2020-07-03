@@ -56,6 +56,16 @@
         fragment.appendChild(renderMapPin(pins[i]));
       }
       mapPins.appendChild(fragment);
+    },
+
+    remove: function () {
+      var pins = document.querySelectorAll('.map__pin');
+
+      for (var i = 0; i < pins.length; i++) {
+        if (!pins[i].classList.contains('map__pin--main')) {
+          pins[i].remove();
+        }
+      }
     }
   };
 })();
