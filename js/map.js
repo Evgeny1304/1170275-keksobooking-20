@@ -44,6 +44,7 @@
 
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
+    window.util.disableInput(mapFilters);
   };
 
   var getAddressNewCoordinate = function () {
