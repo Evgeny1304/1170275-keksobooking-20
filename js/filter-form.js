@@ -34,8 +34,8 @@
       var isPriceSimilar = offerPrice === ANY_FILTER_VALUE ? true : getPriceType(item.offer.price) === offerPrice;
       var isRoomsSimilar = offerRooms === ANY_FILTER_VALUE ? true : item.offer.rooms === parseInt(offerRooms, 10);
       var isGuestsSimilar = offerGuests === ANY_FILTER_VALUE ? true : item.offer.guests === parseInt(offerGuests, 10);
-      var isFeaturesSimilar = offerFeatures.length === 0 ? true : item.offer.features.some(function (element) {
-        return offerFeatures.indexOf(element) >= 0;
+      var isFeaturesSimilar = offerFeatures.length === 0 ? true : offerFeatures.every(function (element) {
+        return item.offer.features.indexOf(element) >= 0;
       });
 
       return isTypeSimilar && isPriceSimilar && isRoomsSimilar && isGuestsSimilar && isFeaturesSimilar;
@@ -66,22 +66,24 @@
     updateOffers();
   };
 
+  var filterByFeatures = function (evt) {
+    var target = evt.target;
+    var targetValue = target.value;
+
+    if (target.checked) {
+      offerFeatures.push(targetValue);
+    } else {
+      var index = offerFeatures.findIndex(function (item) {
+        return item === targetValue;
+      });
+      offerFeatures.splice(index, 1);
+    }
+    updateOffers();
+  };
+
   houseTypeFilter.addEventListener('change', filterByType);
   priceFilter.addEventListener('change', filterByPrice);
   roomsFilter.addEventListener('change', filterByRooms);
   guestsFilter.addEventListener('change', filterByGuests);
-
-  featuresFilter.addEventListener('change', function (evt) {
-    if (evt.target.checked) {
-      offerFeatures.push(evt.target.value);
-    } else {
-      var index = offerFeatures.findIndex(function (item) {
-        return item === evt.target.value;
-      });
-      offerFeatures.splice(index, 1);
-    }
-
-    console.log(offerFeatures);
-    updateOffers();
-  });
+  featuresFilter.addEventListener('change', filterByFeatures);
 })();
