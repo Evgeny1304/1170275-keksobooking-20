@@ -34,8 +34,11 @@
       var isPriceSimilar = offerPrice === ANY_FILTER_VALUE ? true : getPriceType(item.offer.price) === offerPrice;
       var isRoomsSimilar = offerRooms === ANY_FILTER_VALUE ? true : item.offer.rooms === parseInt(offerRooms, 10);
       var isGuestsSimilar = offerGuests === ANY_FILTER_VALUE ? true : item.offer.guests === parseInt(offerGuests, 10);
+      var isFeaturesSimilar = offerFeatures.length === 0 ? true : item.offer.features.some(function (element) {
+        return offerFeatures.indexOf(element) >= 0;
+      });
 
-      return isTypeSimilar && isPriceSimilar && isRoomsSimilar && isGuestsSimilar;
+      return isTypeSimilar && isPriceSimilar && isRoomsSimilar && isGuestsSimilar && isFeaturesSimilar;
     });
 
     window.card.remove(window.map.mainContainer);
@@ -79,5 +82,6 @@
     }
 
     console.log(offerFeatures);
+    updateOffers();
   });
 })();
