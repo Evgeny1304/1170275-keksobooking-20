@@ -13,7 +13,7 @@
   var adSelectTimeIn = document.querySelector('#timein');
   var adSelectTimeOut = document.querySelector('#timeout');
 
-  var isCorrectRoomsGuests = function () {
+  var checkIsCorrectRoomsGuests = function () {
     var isCorrect = true;
     var adSelectRoomsValue = parseInt(adSelectRooms.value, 10);
     var adSelectCapacityValue = parseInt(adSelectCapacity.value, 10);
@@ -36,7 +36,7 @@
   };
 
   var validateRoomsAndGuests = function () {
-    var isValid = isCorrectRoomsGuests();
+    var isValid = checkIsCorrectRoomsGuests();
 
     if (isValid) {
       adSelectCapacity.setCustomValidity('');
