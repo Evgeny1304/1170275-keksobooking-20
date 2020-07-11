@@ -22,7 +22,7 @@
     if (price < LOWER_PRICE) {
       priceType = 'low';
     } else if (price >= LOWER_PRICE && price < HIGHER_PRICE) {
-      priceType = 'middle'
+      priceType = 'middle';
     }
 
     return priceType;
@@ -44,6 +44,21 @@
     window.card.remove(window.map.mainContainer);
     window.pin.remove();
     window.pin.render(sameOffers);
+  };
+
+  var resetSelection = function () {
+    var selectFilters = document.querySelectorAll('.map__filter');
+    selectFilters.forEach(function (filter) {
+      filter.value = ANY_FILTER_VALUE;
+    });
+  };
+
+  var resetFeatures = function () {
+    var features = featuresFilter.querySelectorAll('.map__checkbox');
+    features.forEach(function (feature) {
+      feature.checked = false;
+    });
+    offerFeatures = [];
   };
 
   var filterByType = function () {
@@ -81,9 +96,16 @@
     updateOffers();
   };
 
-  houseTypeFilter.addEventListener('change', filterByType);
-  priceFilter.addEventListener('change', filterByPrice);
-  roomsFilter.addEventListener('change', filterByRooms);
-  guestsFilter.addEventListener('change', filterByGuests);
-  featuresFilter.addEventListener('change', filterByFeatures);
+  houseTypeFilter.addEventListener('change', window.util.debounce(filterByType));
+  priceFilter.addEventListener('change', window.util.debounce(filterByPrice));
+  roomsFilter.addEventListener('change', window.util.debounce(filterByRooms));
+  guestsFilter.addEventListener('change', window.util.debounce(filterByGuests));
+  featuresFilter.addEventListener('change', window.util.debounce(filterByFeatures));
+
+  window.filterForm = {
+    reset: function () {
+      resetSelection();
+      resetFeatures();
+    }
+  };
 })();
