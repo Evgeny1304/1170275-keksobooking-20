@@ -5,6 +5,7 @@
   var ESC_KEY = 'Escape';
   var MOUSE_BTN_LEFT = 0;
   var TIMEOUT_IN_MS = 10000;
+  var DEBOUNCE_INTERVAL = 500;
   var StatusCode = {
     OK: 200
   };
@@ -92,6 +93,20 @@
 
       xhr.open(method, url);
       xhr.send(data);
+    },
+
+    debounce: function (cb) {
+      var lastTimeout = null;
+
+      return function () {
+        var parameters = arguments;
+        if (lastTimeout) {
+          window.clearTimeout(lastTimeout);
+        }
+        lastTimeout = window.setTimeout(function () {
+          cb.apply(null, parameters);
+        }, DEBOUNCE_INTERVAL);
+      };
     }
   };
 })();
