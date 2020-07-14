@@ -15,7 +15,6 @@
     deactivatePage: function () {
       window.map.deactivate();
       window.form.deactivate();
-      window.filterForm.reset();
       isPageActive = false;
     }
   };

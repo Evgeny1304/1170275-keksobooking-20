@@ -6,6 +6,8 @@
   var MOUSE_BTN_LEFT = 0;
   var TIMEOUT_IN_MS = 10000;
   var DEBOUNCE_INTERVAL = 500;
+  var FILE_TYPES = ['jpg', 'jpeg', 'png'];
+
   var StatusCode = {
     OK: 200
   };
@@ -107,6 +109,25 @@
           cb.apply(null, parameters);
         }, DEBOUNCE_INTERVAL);
       };
+    },
+
+    choosePhoto: function (fileChooser, preview) {
+      var file = fileChooser.files[0];
+      var fileName = file.name.toLowerCase();
+
+      var matches = FILE_TYPES.some(function (it) {
+        return fileName.endsWith(it);
+      });
+
+      if (matches) {
+        var reader = new FileReader();
+
+        reader.addEventListener('load', function () {
+          preview.src = reader.result;
+        });
+
+        reader.readAsDataURL(file);
+      }
     }
   };
 })();

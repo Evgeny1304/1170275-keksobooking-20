@@ -123,6 +123,7 @@
       }
       mapPinBtn.style.top = mapPinBtnTop;
       mapPinBtn.style.left = mapPinBtnLeft;
+      mapFilterForm.reset();
       map.classList.add('map--faded');
     },
 
