@@ -10,11 +10,6 @@
   var roomsFilter = document.querySelector('#housing-rooms');
   var guestsFilter = document.querySelector('#housing-guests');
   var featuresFilter = document.querySelector('#housing-features');
-  var offerType = houseTypeFilter.value;
-  var offerPrice = priceFilter.value;
-  var offerRooms = roomsFilter.value;
-  var offerGuests = guestsFilter.value;
-  var offerFeatures = [];
 
   var getPriceType = function (price) {
     var priceType = 'high';
@@ -29,6 +24,14 @@
   };
 
   var updateOffers = function () {
+    var offerType = houseTypeFilter.value;
+    var offerPrice = priceFilter.value;
+    var offerRooms = roomsFilter.value;
+    var offerGuests = guestsFilter.value;
+    var offerFeatures = Array.from(featuresFilter.querySelectorAll('.map__checkbox:checked')).map(function (checkbox) {
+      return checkbox.value;
+    });
+
     var sameOffers = window.offers.filter(function (item) {
       var isTypeSimilar = offerType === ANY_FILTER_VALUE ? true : item.offer.type === offerType;
       var isPriceSimilar = offerPrice === ANY_FILTER_VALUE ? true : getPriceType(item.offer.price) === offerPrice;
@@ -46,66 +49,9 @@
     window.pin.render(sameOffers);
   };
 
-  var resetSelection = function () {
-    var selectFilters = document.querySelectorAll('.map__filter');
-    selectFilters.forEach(function (filter) {
-      filter.value = ANY_FILTER_VALUE;
-    });
-  };
-
-  var resetFeatures = function () {
-    var features = featuresFilter.querySelectorAll('.map__checkbox');
-    features.forEach(function (feature) {
-      feature.checked = false;
-    });
-    offerFeatures = [];
-  };
-
-  var filterByType = function () {
-    offerType = houseTypeFilter.value;
-    updateOffers();
-  };
-
-  var filterByPrice = function () {
-    offerPrice = priceFilter.value;
-    updateOffers();
-  };
-
-  var filterByRooms = function () {
-    offerRooms = roomsFilter.value;
-    updateOffers();
-  };
-
-  var filterByGuests = function () {
-    offerGuests = guestsFilter.value;
-    updateOffers();
-  };
-
-  var filterByFeatures = function (evt) {
-    var target = evt.target;
-    var targetValue = target.value;
-
-    if (target.checked) {
-      offerFeatures.push(targetValue);
-    } else {
-      var index = offerFeatures.findIndex(function (item) {
-        return item === targetValue;
-      });
-      offerFeatures.splice(index, 1);
-    }
-    updateOffers();
-  };
-
-  houseTypeFilter.addEventListener('change', window.util.debounce(filterByType));
-  priceFilter.addEventListener('change', window.util.debounce(filterByPrice));
-  roomsFilter.addEventListener('change', window.util.debounce(filterByRooms));
-  guestsFilter.addEventListener('change', window.util.debounce(filterByGuests));
-  featuresFilter.addEventListener('change', window.util.debounce(filterByFeatures));
-
-  window.filterForm = {
-    reset: function () {
-      resetSelection();
-      resetFeatures();
-    }
-  };
+  houseTypeFilter.addEventListener('change', window.util.debounce(updateOffers));
+  priceFilter.addEventListener('change', window.util.debounce(updateOffers));
+  roomsFilter.addEventListener('change', window.util.debounce(updateOffers));
+  guestsFilter.addEventListener('change', window.util.debounce(updateOffers));
+  featuresFilter.addEventListener('change', window.util.debounce(updateOffers));
 })();

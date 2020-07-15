@@ -12,6 +12,11 @@
   var adInputPrice = document.querySelector('#price');
   var adSelectTimeIn = document.querySelector('#timein');
   var adSelectTimeOut = document.querySelector('#timeout');
+  var adAvatarFileChooser = document.querySelector('.ad-form__field input[type=file]');
+  var adHousingFileChooser = document.querySelector('.ad-form__upload input[type=file]');
+  var avatarPreview = document.querySelector('.ad-form-header__preview img');
+  var housingPreviewBlock = document.querySelector('.ad-form__photo');
+  var housingPreviewSize = housingPreviewBlock.offsetWidth;
 
   var checkIsCorrectRoomsGuests = function () {
     var isCorrect = true;
@@ -91,6 +96,19 @@
 
   adSelectTimeOut.addEventListener('change', function () {
     adSelectTimeIn.value = adSelectTimeOut.value;
+  });
+
+  adAvatarFileChooser.addEventListener('change', function () {
+    window.util.choosePhoto(adAvatarFileChooser, avatarPreview);
+  });
+
+  adHousingFileChooser.addEventListener('change', function () {
+    var housingPreview = document.createElement('img');
+    housingPreview.width = housingPreviewSize;
+    housingPreview.height = housingPreviewSize;
+    housingPreviewBlock.appendChild(housingPreview);
+
+    window.util.choosePhoto(adHousingFileChooser, housingPreview);
   });
 
   window.formValidation = {
