@@ -15,6 +15,7 @@
   var adAvatarFileChooser = document.querySelector('.ad-form__field input[type=file]');
   var adHousingFileChooser = document.querySelector('.ad-form__upload input[type=file]');
   var avatarPreview = document.querySelector('.ad-form-header__preview img');
+  var avatarPreviewSource = avatarPreview.getAttribute('src');
   var housingPreviewBlock = document.querySelector('.ad-form__photo');
   var housingPreviewSize = housingPreviewBlock.offsetWidth;
 
@@ -119,6 +120,11 @@
 
     changeMinPrice: function () {
       changeMinPrice();
+    },
+
+    resetPhotoPreviews: function () {
+      avatarPreview.src = avatarPreviewSource;
+      housingPreviewBlock.innerHTML = '';
     }
   };
 })();

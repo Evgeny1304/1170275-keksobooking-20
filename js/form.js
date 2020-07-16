@@ -48,6 +48,7 @@
       window.util.disableInput(adFormElements);
       adForm.reset();
       window.formValidation.changeMinPrice();
+      window.formValidation.resetPhotoPreviews();
       adFormAddress.value = getAddress();
       adForm.classList.add('ad-form--disabled');
     },
