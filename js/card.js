@@ -64,6 +64,10 @@
     return cardPopup;
   };
 
+  var onCardPopupEscPress = function (evt) {
+    window.util.isEscEvent(evt, closeCard);
+  };
+
   var closeCard = function () {
     var cardPopup = document.querySelector('.map__card');
     var pins = document.querySelectorAll('.map__pin');
@@ -73,9 +77,11 @@
       cardPopup.remove();
     }
 
-    document.removeEventListener('keydown', function (evt) {
-      window.util.isEscEvent(evt, closeCard);
-    });
+    document.removeEventListener('keydown', onCardPopupEscPress);
+  };
+
+  var onCardBtnClick = function () {
+    closeCard();
   };
 
   window.card = {
@@ -83,10 +89,8 @@
       fragment.appendChild(renderCard(card));
       parentContainer.insertBefore(fragment, beforeContainer);
       var cardBtn = document.querySelector('.popup__close');
-      cardBtn.addEventListener('click', closeCard);
-      document.addEventListener('keydown', function (evt) {
-        window.util.isEscEvent(evt, closeCard);
-      });
+      cardBtn.addEventListener('click', onCardBtnClick);
+      document.addEventListener('keydown', onCardPopupEscPress);
     },
 
     remove: function (parentContainer) {

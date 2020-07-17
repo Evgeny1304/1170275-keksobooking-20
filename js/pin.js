@@ -42,7 +42,11 @@
     }
   };
 
-  document.addEventListener('click', openOfferCardPopup);
+  var onMapPinClick = function (evt) {
+    openOfferCardPopup(evt)
+  };
+
+  document.addEventListener('click', onMapPinClick);
 
   document.addEventListener('keydown', function (evt) {
     window.util.isEnterEvent(evt, function () {
@@ -51,6 +55,8 @@
   });
 
   window.pin = {
+    maxOffersCount: MAX_OFFER_COUNT,
+
     render: function (pins) {
       var offersCount = pins.length > MAX_OFFER_COUNT ? MAX_OFFER_COUNT : pins.length;
       for (var i = 0; i < offersCount; i++) {

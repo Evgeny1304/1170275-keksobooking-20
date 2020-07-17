@@ -11,6 +11,8 @@
   var guestsFilter = document.querySelector('#housing-guests');
   var featuresFilter = document.querySelector('#housing-features');
 
+  var maxOffersCount = window.pin.maxOffersCount;
+
   var getPriceType = function (price) {
     var priceType = 'high';
 
@@ -32,7 +34,10 @@
       return checkbox.value;
     });
 
-    var sameOffers = window.offers.filter(function (item) {
+    var sameOffers = [];
+
+    for (var i = 0; i < window.offers.length; i++) {
+      var item = window.offers[i];
       var isTypeSimilar = offerType === ANY_FILTER_VALUE ? true : item.offer.type === offerType;
       var isPriceSimilar = offerPrice === ANY_FILTER_VALUE ? true : getPriceType(item.offer.price) === offerPrice;
       var isRoomsSimilar = offerRooms === ANY_FILTER_VALUE ? true : item.offer.rooms === parseInt(offerRooms, 10);
@@ -41,8 +46,10 @@
         return item.offer.features.indexOf(element) >= 0;
       });
 
-      return isTypeSimilar && isPriceSimilar && isRoomsSimilar && isGuestsSimilar && isFeaturesSimilar;
-    });
+      if (sameOffers.length <= maxOffersCount && isTypeSimilar && isPriceSimilar && isRoomsSimilar && isGuestsSimilar && isFeaturesSimilar) {
+        sameOffers.push(item);
+      }
+    }
 
     window.card.remove(window.map.mainContainer);
     window.pin.remove();
