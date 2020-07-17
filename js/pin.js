@@ -43,7 +43,7 @@
   };
 
   var onMapPinClick = function (evt) {
-    openOfferCardPopup(evt)
+    openOfferCardPopup(evt);
   };
 
   document.addEventListener('click', onMapPinClick);
