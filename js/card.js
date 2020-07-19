@@ -44,7 +44,6 @@
 
   var renderCard = function (card) {
     var cardPopup = cardPopupTemplate.cloneNode(true);
-    cardRef = document.querySelector('.map__card');
 
     cardPopup.querySelector('.popup__title').textContent = card.offer.title;
     cardPopup.querySelector('.popup__text--address').textContent = card.offer.address;
@@ -64,6 +63,8 @@
 
     cardPopup.querySelector('.popup__avatar').src = card.author.avatar;
 
+    cardRef = cardPopup;
+
     return cardPopup;
   };
 
@@ -72,14 +73,10 @@
   };
 
   var closeCard = function () {
-    var cardPopup = cardRef;
     var pins = document.querySelectorAll('.map__pin');
     window.util.removeActiveStatesPins(pins);
-
-    if (cardPopup !== null) {
-      cardPopup.remove();
-      cardRef = null;
-    }
+    cardRef.remove();
+    cardRef = null;
 
     document.removeEventListener('keydown', onCardPopupEscPress);
   };
