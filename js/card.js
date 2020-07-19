@@ -5,6 +5,8 @@
 
   var fragment = document.createDocumentFragment();
 
+  var cardRef;
+
   var renderCardRooms = function (element, card) {
     var rooms = card.offer.rooms;
     var guests = card.offer.guests;
@@ -42,6 +44,7 @@
 
   var renderCard = function (card) {
     var cardPopup = cardPopupTemplate.cloneNode(true);
+    cardRef = document.querySelector('.map__card');
 
     cardPopup.querySelector('.popup__title').textContent = card.offer.title;
     cardPopup.querySelector('.popup__text--address').textContent = card.offer.address;
@@ -69,12 +72,13 @@
   };
 
   var closeCard = function () {
-    var cardPopup = document.querySelector('.map__card');
+    var cardPopup = cardRef;
     var pins = document.querySelectorAll('.map__pin');
     window.util.removeActiveStatesPins(pins);
 
     if (cardPopup !== null) {
       cardPopup.remove();
+      cardRef = null;
     }
 
     document.removeEventListener('keydown', onCardPopupEscPress);

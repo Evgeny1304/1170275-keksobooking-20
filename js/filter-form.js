@@ -37,17 +37,21 @@
     var sameOffers = [];
 
     for (var i = 0; i < window.offers.length; i++) {
-      var item = window.offers[i];
-      var isTypeSimilar = offerType === ANY_FILTER_VALUE ? true : item.offer.type === offerType;
-      var isPriceSimilar = offerPrice === ANY_FILTER_VALUE ? true : getPriceType(item.offer.price) === offerPrice;
-      var isRoomsSimilar = offerRooms === ANY_FILTER_VALUE ? true : item.offer.rooms === parseInt(offerRooms, 10);
-      var isGuestsSimilar = offerGuests === ANY_FILTER_VALUE ? true : item.offer.guests === parseInt(offerGuests, 10);
-      var isFeaturesSimilar = offerFeatures.length === 0 ? true : offerFeatures.every(function (element) {
-        return item.offer.features.indexOf(element) >= 0;
-      });
+      if (sameOffers.length === maxOffersCount) {
+        break;
+      } else {
+        var item = window.offers[i];
+        var isTypeSimilar = offerType === ANY_FILTER_VALUE ? true : item.offer.type === offerType;
+        var isPriceSimilar = offerPrice === ANY_FILTER_VALUE ? true : getPriceType(item.offer.price) === offerPrice;
+        var isRoomsSimilar = offerRooms === ANY_FILTER_VALUE ? true : item.offer.rooms === parseInt(offerRooms, 10);
+        var isGuestsSimilar = offerGuests === ANY_FILTER_VALUE ? true : item.offer.guests === parseInt(offerGuests, 10);
+        var isFeaturesSimilar = offerFeatures.length === 0 ? true : offerFeatures.every(function (element) {
+          return item.offer.features.indexOf(element) >= 0;
+        });
 
-      if (sameOffers.length <= maxOffersCount && isTypeSimilar && isPriceSimilar && isRoomsSimilar && isGuestsSimilar && isFeaturesSimilar) {
-        sameOffers.push(item);
+        if (isTypeSimilar && isPriceSimilar && isRoomsSimilar && isGuestsSimilar && isFeaturesSimilar) {
+          sameOffers.push(item);
+        }
       }
     }
 
